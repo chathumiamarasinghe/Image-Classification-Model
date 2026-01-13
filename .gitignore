@@ -1,0 +1,29 @@
+# Virtual environments
+venv/
+env/
+.venv/
+venv_frontend/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TensorFlow / model cache
+*.log
+
+# VS Code
+.vscode/
+
+# Large datasets (optional)
+data/
+dataset/
+
+# Node (if any)
+node_modules/
