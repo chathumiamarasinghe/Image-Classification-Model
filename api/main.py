@@ -68,7 +68,7 @@ import os
 
 app = FastAPI()
 
-# --- CORS (allow all for simplicity in deployment) ---
+# --- CORS ---
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -77,35 +77,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- Load Model (correct path for Render & local) ---
+# --- Load Model ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "..", "saved_models", "1.keras")
 
+print("Loading model from:", MODEL_PATH)
 MODEL = tf.keras.models.load_model(MODEL_PATH)
+print("Model loaded successfully")
 
-# --- potato, tomato & pepper ---
+# ⚠️ IMPORTANT: This order MUST match training notebook exactly
 CLASS_NAMES = [
-
-    "Potato___Early_blight","Potato___Late_blight","Potato___healthy"
+    "Potato___Early_blight",
+    "Potato___Late_blight",
+    "Potato___healthy"
 ]
-
-# CLASS_NAMES = [
-#     "Pepper_bell_Bacterial_spot",
-#     "Pepper_bell_healthy",
-#     "Potato_Early_blight",
-#     "Potato_healthy",
-#     "Potato_Late_blight",
-#     "Tomato_Target_Spot",
-#     "Tomato_Tomato_mosaic_virus",
-#     "Tomato_Tomato_YellowLeaf_Curl_Virus",
-#     "Tomato_Bacterial_spot",
-#     "Tomato_Early_blight",
-#     "Tomato_healthy",
-#     "Tomato_Late_blight",
-#     "Tomato_Leaf_Mold",
-#     "Tomato_Septoria_leaf_spot",
-#     "Tomato_Spider_mites"
-# ]
 
 IMAGE_SIZE = 256
 
@@ -125,12 +110,24 @@ def read_file_as_image(data) -> np.ndarray:
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     try:
-        image = read_file_as_image(await file.read())
+        data = await file.read()
+
+        # 🔍 DEBUG: check image bytes are changing
+        print("Received image size:", len(data))
+
+        image = read_file_as_image(data)
         img_batch = np.expand_dims(image, 0)
 
         predictions = MODEL.predict(img_batch)
-        predicted_class = CLASS_NAMES[np.argmax(predictions[0])]
+
+        # 🔍 DEBUG: see raw predictions
+        print("Raw predictions:", predictions)
+
+        predicted_index = int(np.argmax(predictions[0]))
+        predicted_class = CLASS_NAMES[predicted_index]
         confidence = float(np.max(predictions[0]))
+
+        print("Predicted class:", predicted_class, "Confidence:", confidence)
 
         return {
             "class": predicted_class,
@@ -138,5 +135,5 @@ async def predict(file: UploadFile = File(...)):
         }
 
     except Exception as e:
+        print("Error:", str(e))
         return {"error": str(e)}
-
