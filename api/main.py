@@ -79,7 +79,7 @@ app.add_middleware(
 
 # --- Load Model (correct path for Render & local) ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "saved_models", "2.keras")
+MODEL_PATH = os.path.join(BASE_DIR, "..", "saved_models", "1.keras")
 
 MODEL = tf.keras.models.load_model(MODEL_PATH)
 
