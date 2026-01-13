@@ -22,8 +22,9 @@ if uploaded_file is not None:
 
     # Convert image to bytes
     img_bytes = io.BytesIO()
-    image.save(img_bytes, format=image.format)
+    image.save(img_bytes, format="PNG")
     img_bytes = img_bytes.getvalue()
+
 
     # Send POST request to FastAPI
     files = {"file": (uploaded_file.name, img_bytes, uploaded_file.type)}
