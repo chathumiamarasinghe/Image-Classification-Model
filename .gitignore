@@ -24,6 +24,11 @@ Thumbs.db
 # Large datasets (optional)
 data/
 dataset/
+.PlantVillage/
 
 # Node (if any)
 node_modules/
+
+
+# Ignore PlantVillage dataset
+training/PlantVillage/

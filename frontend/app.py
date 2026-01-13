@@ -6,8 +6,11 @@ import io
 # --- FastAPI backend URL (LIVE) ---
 API_URL = "https://leaf-disease-classifier.onrender.com/predict"
 
-st.title("Potato Leaf Disease Classifier 🍀")
-st.write("Upload a potato leaf image to detect disease.")
+# st.title("Leaf Disease Classifier 🍀")
+# st.write("Upload a potato leaf image to detect disease.")
+st.title("Plant Leaf Disease Classifier 🌱")
+st.write("Upload a leaf image (Potato / Tomato / Pepper) to detect disease.")
+
 
 # Upload image
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
@@ -28,7 +31,7 @@ if uploaded_file is not None:
     files = {"file": (uploaded_file.name, img_bytes, uploaded_file.type)}
     try:
         response = requests.post(API_URL, files=files)
-        response.raise_for_status()  # raise error if status not 200
+        response.raise_for_status()
 
         result = response.json()
         st.success(f"Prediction: {result['class']}")
