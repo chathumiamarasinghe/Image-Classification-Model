@@ -3,8 +3,8 @@ import requests
 from PIL import Image
 import io
 
-# --- FastAPI backend URL ---
-API_URL = "http://127.0.0.1:8000/predict"
+# --- FastAPI backend URL (LIVE) ---
+API_URL = "https://leaf-disease-classifier.onrender.com/predict"
 
 st.title("Potato Leaf Disease Classifier 🍀")
 st.write("Upload a potato leaf image to detect disease.")
@@ -26,11 +26,12 @@ if uploaded_file is not None:
     
     # Send POST request to FastAPI
     files = {"file": (uploaded_file.name, img_bytes, uploaded_file.type)}
-    response = requests.post(API_URL, files=files)
-    
-    if response.status_code == 200:
+    try:
+        response = requests.post(API_URL, files=files)
+        response.raise_for_status()  # raise error if status not 200
+
         result = response.json()
         st.success(f"Prediction: {result['class']}")
         st.info(f"Confidence: {result['confidence']*100:.2f}%")
-    else:
-        st.error("Error in prediction. Make sure the backend is running.")
+    except requests.exceptions.RequestException as e:
+        st.error(f"Error in prediction: {e}")
