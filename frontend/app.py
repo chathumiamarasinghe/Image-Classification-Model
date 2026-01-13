@@ -9,7 +9,7 @@ API_URL = "https://leaf-disease-classifier.onrender.com/predict"
 # st.title("Leaf Disease Classifier 🍀")
 # st.write("Upload a potato leaf image to detect disease.")
 st.title("Plant Leaf Disease Classifier 🌱")
-st.write("Upload a leaf image (Potato / Tomato / Pepper) to detect disease.")
+st.write("Upload a Potato leaf image to detect disease.")
 
 
 # Upload image
