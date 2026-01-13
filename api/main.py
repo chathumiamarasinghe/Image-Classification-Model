@@ -79,16 +79,14 @@ app.add_middleware(
 
 # --- Load Model (correct path for Render & local) ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "..", "saved_models", "1.keras")
+MODEL_PATH = os.path.join(BASE_DIR, "..", "saved_models", "3.keras")
 
 MODEL = tf.keras.models.load_model(MODEL_PATH)
 
 # --- potato, tomato & pepper ---
 CLASS_NAMES = [
 
-    "Potato_Early_blight",
-    "Potato_healthy",
-    "Potato_Late_blight",
+    "Potato___Early_blight","Potato___Late_blight","Potato___healthy"
 ]
 
 # CLASS_NAMES = [
